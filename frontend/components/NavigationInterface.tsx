@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { Settings, X, RotateCcw, MessageCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Settings, X, RotateCcw, MessageCircle, Satellite } from 'lucide-react';
 import { NavigationStep } from '../types';
+import backend from '~backend/client';
 
 interface NavigationInterfaceProps {
   navigationStep: NavigationStep;
   upcomingSteps: NavigationStep[];
   estimatedTime: number;
+  totalDistance: string;
   destination: string;
   routeType: string;
   spokenLanguage: string;
@@ -23,6 +25,7 @@ const NavigationInterface: React.FC<NavigationInterfaceProps> = ({
   navigationStep,
   upcomingSteps,
   estimatedTime,
+  totalDistance,
   destination,
   routeType,
   spokenLanguage,
@@ -36,11 +39,30 @@ const NavigationInterface: React.FC<NavigationInterfaceProps> = ({
   totalSteps
 }) => {
   const [aiQuestion, setAiQuestion] = useState('');
+  const [satelliteImage, setSatelliteImage] = useState<string>('');
+  const [showSatellite, setShowSatellite] = useState(false);
 
   const handleAskAI = () => {
     if (aiQuestion.trim()) {
       onAskAI(aiQuestion);
       setAiQuestion('');
+    }
+  };
+
+  const loadSatelliteImage = async () => {
+    try {
+      // Use demo coordinates for satellite image
+      const response = await backend.navigation.getSatelliteImage({
+        latitude: 40.7128,
+        longitude: -74.0060,
+        zoom: 16,
+        width: 400,
+        height: 300
+      });
+      setSatelliteImage(response.imageUrl);
+      setShowSatellite(true);
+    } catch (error) {
+      console.error('Failed to load satellite image:', error);
     }
   };
 
@@ -75,13 +97,22 @@ const NavigationInterface: React.FC<NavigationInterfaceProps> = ({
         <div className="bg-white rounded-xl shadow-lg p-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-lg font-semibold text-gray-700">Step {currentStep + 1} of {totalSteps}</span>
-            <button
-              onClick={onNextStep}
-              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors duration-200"
-              disabled={currentStep >= totalSteps - 1}
-            >
-              Next Step
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={loadSatelliteImage}
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors duration-200 flex items-center"
+              >
+                <Satellite className="mr-2" size={16} />
+                Satellite
+              </button>
+              <button
+                onClick={onNextStep}
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors duration-200"
+                disabled={currentStep >= totalSteps - 1}
+              >
+                Next Step
+              </button>
+            </div>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div 
@@ -90,6 +121,32 @@ const NavigationInterface: React.FC<NavigationInterfaceProps> = ({
             ></div>
           </div>
         </div>
+
+        {/* Satellite Image Modal */}
+        {showSatellite && satelliteImage && (
+          <div className="bg-white rounded-xl shadow-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-2xl font-bold text-gray-800 flex items-center">
+                <Satellite className="mr-2" size={24} />
+                Satellite View
+              </h3>
+              <button
+                onClick={() => setShowSatellite(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            <div className="text-center">
+              <img 
+                src={satelliteImage} 
+                alt="Satellite view of current area"
+                className="mx-auto rounded-lg shadow-lg max-w-full h-auto"
+              />
+              <p className="text-sm text-gray-500 mt-2">© Mapbox © OpenStreetMap</p>
+            </div>
+          </div>
+        )}
 
         {/* Current Instruction - Main Focus */}
         <div className="bg-white rounded-xl shadow-xl p-8 border-l-8 border-blue-600">
@@ -167,8 +224,8 @@ const NavigationInterface: React.FC<NavigationInterfaceProps> = ({
               <p className="text-2xl font-bold text-gray-800">{estimatedTime} min</p>
             </div>
             <div className="text-center">
-              <p className="text-gray-500 text-sm uppercase tracking-wide">Destination</p>
-              <p className="text-lg font-semibold text-gray-800">{destination}</p>
+              <p className="text-gray-500 text-sm uppercase tracking-wide">Distance</p>
+              <p className="text-lg font-semibold text-gray-800">{totalDistance}</p>
             </div>
             <div className="text-center">
               <p className="text-gray-500 text-sm uppercase tracking-wide">Route</p>
@@ -176,8 +233,8 @@ const NavigationInterface: React.FC<NavigationInterfaceProps> = ({
             </div>
           </div>
           <div className="mt-4 text-center">
-            <p className="text-gray-500 text-sm uppercase tracking-wide">Language</p>
-            <p className="text-xl font-semibold text-gray-800">{spokenLanguage}</p>
+            <p className="text-gray-500 text-sm uppercase tracking-wide">Destination</p>
+            <p className="text-xl font-semibold text-gray-800">{destination}</p>
           </div>
         </div>
 

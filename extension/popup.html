@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessible Navigation Assistant</title>
+  <style>
+    body {
+      width: 350px;
+      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f8f9fa;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .header h1 {
+      color: #4285f4;
+      font-size: 20px;
+      margin: 0 0 8px 0;
+    }
+    
+    .header p {
+      color: #5f6368;
+      font-size: 14px;
+      margin: 0;
+    }
+    
+    .feature-section {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-section h3 {
+      margin: 0 0 12px 0;
+      color: #202124;
+      font-size: 16px;
+    }
+    
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .feature-list li {
+      padding: 4px 0;
+      color: #5f6368;
+      font-size: 14px;
+    }
+    
+    .feature-list li:before {
+      content: "✓ ";
+      color: #34a853;
+      font-weight: bold;
+    }
+    
+    .quick-actions {
+      display: grid;
+      gap: 8px;
+    }
+    
+    .action-btn {
+      padding: 12px 16px;
+      background: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+    
+    .action-btn:hover {
+      background: #3367d6;
+    }
+    
+    .action-btn:disabled {
+      background: #dadce0;
+      color: #5f6368;
+      cursor: not-allowed;
+    }
+    
+    .status {
+      text-align: center;
+      padding: 12px;
+      background: #e8f5e8;
+      border-radius: 6px;
+      color: #137333;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    
+    .status.inactive {
+      background: #fce8e6;
+      color: #d93025;
+    }
+    
+    .keyboard-shortcuts {
+      font-size: 12px;
+      color: #5f6368;
+      line-height: 1.4;
+    }
+    
+    .keyboard-shortcuts strong {
+      color: #202124;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Accessible Navigation</h1>
+    <p>Enhance Google Maps with accessibility features</p>
+  </div>
+  
+  <div id="status" class="status">
+    Extension Active on Google Maps
+  </div>
+  
+  <div class="feature-section">
+    <h3>Features Available</h3>
+    <ul class="feature-list">
+      <li>Voice commands for hands-free navigation</li>
+      <li>Audio descriptions of directions</li>
+      <li>High contrast and large text modes</li>
+      <li>Keyboard shortcuts for quick access</li>
+      <li>Automatic direction announcements</li>
+      <li>Accessible route finding</li>
+    </ul>
+  </div>
+  
+  <div class="feature-section">
+    <h3>Quick Actions</h3>
+    <div class="quick-actions">
+      <button id="speak-directions" class="action-btn">Speak Current Directions</button>
+      <button id="describe-location" class="action-btn">Describe Location</button>
+      <button id="toggle-high-contrast" class="action-btn">Toggle High Contrast</button>
+      <button id="open-settings" class="action-btn">Open Settings Panel</button>
+    </div>
+  </div>
+  
+  <div class="feature-section">
+    <h3>Keyboard Shortcuts</h3>
+    <div class="keyboard-shortcuts">
+      <strong>Alt + A:</strong> Toggle accessibility panel<br>
+      <strong>Alt + D:</strong> Speak current directions<br>
+      <strong>Alt + L:</strong> Describe current location
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

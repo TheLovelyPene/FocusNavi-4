@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "Accessible Navigation Assistant",
+  "version": "1.0.0",
+  "description": "Enhance Google Maps with accessibility features for users with visual impairments",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "geolocation",
+    "tts"
+  ],
+  "host_permissions": [
+    "https://maps.google.com/*",
+    "https://www.google.com/maps/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://maps.google.com/*",
+        "https://www.google.com/maps/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "styles.css"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Accessible Navigation Assistant"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "accessibility-panel.html",
+        "voice-commands.js",
+        "audio-feedback.js"
+      ],
+      "matches": [
+        "https://maps.google.com/*",
+        "https://www.google.com/maps/*"
+      ]
+    }
+  ]
+}

@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NavigationInterface from './components/NavigationInterface';
 import AudioSettings from './components/AudioSettings';
 import AskAI from './components/AskAI';
-import type { AudioSettings as AudioSettingsType, NavigationStep } from './types';
+import RouteSetup from './components/RouteSetup';
+import backend from '~backend/client';
+import type { AudioSettings as AudioSettingsType, NavigationStep, RoutePreferences } from './types';
 
 function App() {
   const [currentStep, setCurrentStep] = useState(0);
   const [showSettings, setShowSettings] = useState(false);
-  const [routePreferences] = useState({
+  const [showRouteSetup, setShowRouteSetup] = useState(true);
+  const [routePreferences, setRoutePreferences] = useState<RoutePreferences>({
     avoidTolls: false,
     avoidHighways: false,
     preferAccessiblePaths: true
@@ -19,32 +22,33 @@ function App() {
     language: 'English'
   });
   const [navigationSteps, setNavigationSteps] = useState<NavigationStep[]>([]);
-  const [estimatedTime, setEstimatedTime] = useState(12);
+  const [estimatedTime, setEstimatedTime] = useState(0);
+  const [totalDistance, setTotalDistance] = useState('');
+  const [routeType, setRouteType] = useState('');
   const [aiResponse, setAiResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [origin, setOrigin] = useState('');
+  const [destination, setDestination] = useState('');
 
-  // Load initial route
-  useState(() => {
-    loadRoute();
-  });
-
-  const loadRoute = async () => {
+  const loadRoute = async (originAddr: string, destAddr: string, preferences: RoutePreferences) => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/navigation/route', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          origin: 'Current Location',
-          destination: 'Community Center',
-          preferences: routePreferences
-        })
+      const response = await backend.navigation.getRoute({
+        origin: originAddr,
+        destination: destAddr,
+        preferences
       });
-      const data = await response.json();
-      setNavigationSteps(data.steps);
-      setEstimatedTime(data.estimatedTime);
+      
+      setNavigationSteps(response.steps);
+      setEstimatedTime(response.estimatedTime);
+      setTotalDistance(response.totalDistance);
+      setRouteType(response.routeType);
+      setCurrentStep(0);
+      setShowRouteSetup(false);
+      setAiResponse(`Route calculated! ${response.steps.length} steps to your destination.`);
     } catch (error) {
       console.error('Failed to load route:', error);
+      setAiResponse('Sorry, I could not calculate your route. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -58,40 +62,49 @@ function App() {
   const handleNextStep = () => {
     if (currentStep < navigationSteps.length - 1) {
       setCurrentStep(currentStep + 1);
+      setAiResponse(`Moving to step ${currentStep + 2}. ${navigationSteps[currentStep + 1]?.instruction}`);
+    } else {
+      setAiResponse('You have reached your destination! Navigation complete.');
     }
   };
 
   const handleCancel = () => {
     setCurrentStep(0);
+    setNavigationSteps([]);
+    setShowRouteSetup(true);
     setAiResponse('Navigation cancelled. You can start a new route anytime.');
   };
 
   const handleReroute = () => {
-    setCurrentStep(0);
-    loadRoute();
-    setAiResponse('Finding new accessible route...');
+    if (origin && destination) {
+      loadRoute(origin, destination, routePreferences);
+      setAiResponse('Recalculating route with current preferences...');
+    }
   };
 
   const handleAskAI = async (question: string) => {
     try {
-      const response = await fetch('/api/ai/command', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ command: question })
-      });
-      const data = await response.json();
-      setAiResponse(data.response);
+      const response = await backend.ai.processCommand({ command: question });
+      setAiResponse(response.response);
     } catch (error) {
       console.error('AI request failed:', error);
       setAiResponse('Sorry, I could not process your request right now.');
     }
   };
 
+  const handleStartNavigation = (originAddr: string, destAddr: string, preferences: RoutePreferences) => {
+    setOrigin(originAddr);
+    setDestination(destAddr);
+    setRoutePreferences(preferences);
+    loadRoute(originAddr, destAddr, preferences);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-4xl font-bold text-gray-800 mb-4">Loading Route...</div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="text-4xl font-bold text-gray-800 mb-4">Calculating Route...</div>
           <div className="text-xl text-gray-600">Finding the best accessible path for you</div>
         </div>
       </div>
@@ -104,7 +117,13 @@ function App() {
   return (
     <div className="app-container bg-gray-100 min-h-screen">
       <AskAI onAICommand={handleAskAI} />
-      {showSettings ? (
+      
+      {showRouteSetup ? (
+        <RouteSetup
+          onStartNavigation={handleStartNavigation}
+          initialPreferences={routePreferences}
+        />
+      ) : showSettings ? (
         <AudioSettings
           onSave={handleSaveSettings}
           initialSettings={audioSettings}
@@ -114,8 +133,9 @@ function App() {
           navigationStep={currentNavigationStep}
           upcomingSteps={upcomingSteps}
           estimatedTime={estimatedTime}
-          destination="Community Center"
-          routeType={routePreferences.preferAccessiblePaths ? 'Accessible Route' : 'Standard Route'}
+          totalDistance={totalDistance}
+          destination={destination}
+          routeType={routeType}
           spokenLanguage={audioSettings.language}
           aiResponse={aiResponse}
           onSettingsClick={() => setShowSettings(true)}
