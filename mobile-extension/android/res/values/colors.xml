@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="primary_blue">#4285F4</color>
+    <color name="primary_blue_dark">#3367D6</color>
+    <color name="primary_blue_light">#E8F0FE</color>
+    
+    <!-- Accessibility Colors -->
+    <color name="accessibility_green">#34A853</color>
+    <color name="accessibility_orange">#FF9800</color>
+    <color name="accessibility_red">#EA4335</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#202124</color>
+    <color name="text_secondary">#5F6368</color>
+    <color name="text_hint">#9AA0A6</color>
+    
+    <!-- Background Colors -->
+    <color name="background_overlay">#F8F9FA</color>
+    <color name="background_overlay_dark">#FFFFFF</color>
+    
+    <!-- High Contrast Mode -->
+    <color name="high_contrast_bg">#000000</color>
+    <color name="high_contrast_text">#FFFFFF</color>
+    <color name="high_contrast_accent">#FFFF00</color>
+    
+    <!-- Button Colors -->
+    <color name="button_primary">#4285F4</color>
+    <color name="button_primary_pressed">#3367D6</color>
+    <color name="button_secondary">#F8F9FA</color>
+    <color name="button_secondary_pressed">#E8EAED</color>
+    
+    <!-- Transparency -->
+    <color name="overlay_background">#E6FFFFFF</color>
+    <color name="overlay_shadow">#1A000000</color>
+</resources>

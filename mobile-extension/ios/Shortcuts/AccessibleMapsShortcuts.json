@@ -1,0 +1,240 @@
+{
+  "shortcuts": [
+    {
+      "name": "Read Google Maps Directions",
+      "description": "Speaks the current navigation directions from Google Maps",
+      "icon": "location.fill",
+      "color": "blue",
+      "actions": [
+        {
+          "type": "get_current_app",
+          "parameters": {}
+        },
+        {
+          "type": "conditional",
+          "condition": "app_name_contains",
+          "value": "Maps",
+          "true_actions": [
+            {
+              "type": "get_screen_content",
+              "parameters": {
+                "accessibility_only": true
+              }
+            },
+            {
+              "type": "extract_text",
+              "parameters": {
+                "pattern": "(Turn|Continue|Head|Take|Exit|Arrive|In \\d+)",
+                "case_sensitive": false
+              }
+            },
+            {
+              "type": "speak_text",
+              "parameters": {
+                "text": "Current direction: {{extracted_text}}",
+                "rate": 0.5,
+                "pitch": 1.0
+              }
+            }
+          ],
+          "false_actions": [
+            {
+              "type": "speak_text",
+              "parameters": {
+                "text": "Please open Google Maps first",
+                "rate": 0.5,
+                "pitch": 1.0
+              }
+            }
+          ]
+        }
+      ],
+      "siri_phrase": "Read directions"
+    },
+    {
+      "name": "Describe Current Location",
+      "description": "Describes the current location shown in Google Maps",
+      "icon": "location.circle.fill",
+      "color": "green",
+      "actions": [
+        {
+          "type": "get_current_app",
+          "parameters": {}
+        },
+        {
+          "type": "conditional",
+          "condition": "app_name_contains",
+          "value": "Maps",
+          "true_actions": [
+            {
+              "type": "get_screen_content",
+              "parameters": {
+                "accessibility_only": true
+              }
+            },
+            {
+              "type": "extract_text",
+              "parameters": {
+                "pattern": "Search|Current location|\\b[A-Z][a-z]+ [A-Z][a-z]+\\b",
+                "case_sensitive": false
+              }
+            },
+            {
+              "type": "speak_text",
+              "parameters": {
+                "text": "Current location: {{extracted_text}}",
+                "rate": 0.5,
+                "pitch": 1.0
+              }
+            }
+          ],
+          "false_actions": [
+            {
+              "type": "speak_text",
+              "parameters": {
+                "text": "Please open Google Maps first",
+                "rate": 0.5,
+                "pitch": 1.0
+              }
+            }
+          ]
+        }
+      ],
+      "siri_phrase": "Where am I"
+    },
+    {
+      "name": "Open Accessible Maps Settings",
+      "description": "Opens the Accessible Maps app settings",
+      "icon": "gearshape.fill",
+      "color": "gray",
+      "actions": [
+        {
+          "type": "open_app",
+          "parameters": {
+            "app_identifier": "com.accessiblemaps.ios"
+          }
+        },
+        {
+          "type": "wait",
+          "parameters": {
+            "duration": 1.0
+          }
+        },
+        {
+          "type": "speak_text",
+          "parameters": {
+            "text": "Accessible Maps settings opened",
+            "rate": 0.5,
+            "pitch": 1.0
+          }
+        }
+      ],
+      "siri_phrase": "Open accessible maps settings"
+    },
+    {
+      "name": "Start Accessible Navigation",
+      "description": "Starts navigation with accessibility announcements",
+      "icon": "arrow.triangle.turn.up.right.diamond.fill",
+      "color": "orange",
+      "actions": [
+        {
+          "type": "ask_for_input",
+          "parameters": {
+            "prompt": "Where would you like to go?",
+            "input_type": "text"
+          }
+        },
+        {
+          "type": "open_url",
+          "parameters": {
+            "url": "comgooglemaps://?daddr={{user_input}}&directionsmode=walking"
+          }
+        },
+        {
+          "type": "wait",
+          "parameters": {
+            "duration": 3.0
+          }
+        },
+        {
+          "type": "speak_text",
+          "parameters": {
+            "text": "Navigation started to {{user_input}}. Use voice commands for assistance.",
+            "rate": 0.5,
+            "pitch": 1.0
+          }
+        }
+      ],
+      "siri_phrase": "Start accessible navigation"
+    },
+    {
+      "name": "Find Accessible Route",
+      "description": "Searches for accessible route options",
+      "icon": "figure.roll",
+      "color": "purple",
+      "actions": [
+        {
+          "type": "get_current_app",
+          "parameters": {}
+        },
+        {
+          "type": "conditional",
+          "condition": "app_name_contains",
+          "value": "Maps",
+          "true_actions": [
+            {
+              "type": "speak_text",
+              "parameters": {
+                "text": "Looking for accessible route options. Check route alternatives in Google Maps.",
+                "rate": 0.5,
+                "pitch": 1.0
+              }
+            },
+            {
+              "type": "simulate_tap",
+              "parameters": {
+                "accessibility_label": "Route options"
+              }
+            }
+          ],
+          "false_actions": [
+            {
+              "type": "speak_text",
+              "parameters": {
+                "text": "Please open Google Maps and start navigation first",
+                "rate": 0.5,
+                "pitch": 1.0
+              }
+            }
+          ]
+        }
+      ],
+      "siri_phrase": "Find accessible route"
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "author": "Accessible Maps Team",
+    "description": "Voice-activated accessibility shortcuts for Google Maps",
+    "requirements": {
+      "ios_version": "12.0+",
+      "apps": ["Google Maps"],
+      "permissions": ["Siri", "Accessibility"]
+    },
+    "installation_instructions": [
+      "1. Download the Accessible Maps app from the App Store",
+      "2. Open the Shortcuts app on your iPhone",
+      "3. Tap 'Gallery' and search for 'Accessible Maps'",
+      "4. Add the shortcuts you want to use",
+      "5. Enable Siri access for each shortcut",
+      "6. Say the Siri phrase to activate"
+    ],
+    "voice_commands": [
+      "Hey Siri, read directions",
+      "Hey Siri, where am I",
+      "Hey Siri, start accessible navigation",
+      "Hey Siri, find accessible route",
+      "Hey Siri, open accessible maps settings"
+    ]
+  }
+}

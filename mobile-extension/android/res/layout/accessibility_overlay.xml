@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/accessibility_panel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/overlay_background"
+    android:padding="12dp"
+    android:elevation="8dp">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/primary_blue"
+        android:padding="8dp"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Accessible Maps"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/minimize_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/minimize_button_bg"
+            android:text="−"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <!-- Status Text -->
+    <TextView
+        android:id="@+id/status_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ready"
+        android:textSize="12sp"
+        android:textColor="@color/text_secondary"
+        android:gravity="center"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Control Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/voice_command_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Voice"
+            android:textSize="12sp"
+            android:background="@drawable/button_primary"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="Activate voice commands" />
+
+        <Button
+            android:id="@+id/read_directions_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Read Directions"
+            android:textSize="12sp"
+            android:background="@drawable/button_secondary"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="Read current navigation directions" />
+
+        <Button
+            android:id="@+id/describe_location_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Where Am I"
+            android:textSize="12sp"
+            android:background="@drawable/button_secondary"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="Describe current location" />
+
+        <Button
+            android:id="@+id/settings_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Settings"
+            android:textSize="12sp"
+            android:background="@drawable/button_tertiary"
+            android:textColor="@color/text_secondary"
+            android:contentDescription="Open accessibility settings" />
+
+    </LinearLayout>
+
+    <!-- Quick Actions (Collapsible) -->
+    <LinearLayout
+        android:id="@+id/quick_actions_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quick Actions"
+            android:textSize="10sp"
+            android:textColor="@color/text_secondary"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/zoom_in_button"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
+                android:text="+"
+                android:textSize="16sp"
+                android:background="@drawable/button_small"
+                android:layout_marginRight="2dp"
+                android:contentDescription="Zoom in" />
+
+            <Button
+                android:id="@+id/zoom_out_button"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
+                android:text="−"
+                android:textSize="16sp"
+                android:background="@drawable/button_small"
+                android:layout_marginLeft="2dp"
+                android:contentDescription="Zoom out" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Voice Commands Help -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Say: 'directions', 'where am I', 'zoom in', 'help'"
+        android:textSize="9sp"
+        android:textColor="@color/text_hint"
+        android:layout_marginTop="8dp"
+        android:gravity="center" />
+
+</LinearLayout>
