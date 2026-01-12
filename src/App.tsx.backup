@@ -1,0 +1,9 @@
+export default function App() {
+  return (
+    <div style={{ padding: '20px', backgroundColor: '#000', color: '#fff', minHeight: '100vh' }}>
+      <h1>FocusNavi v4</h1>
+      <p>✅ App is working — no blank page.</p>
+      <p>Next: Add map, voice, toggle.</p>
+    </div>
+  );
+}
