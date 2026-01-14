@@ -4,9 +4,11 @@ import type { Location } from '../services/api';
 
 interface Props {
     onSelectLocation: (loc: Location) => void;
+    label?: string;
+    placeholder?: string;
 }
 
-export default function NavigationControl({ onSelectLocation }: Props) {
+export default function NavigationControl({ onSelectLocation, label = '📍 Where to?', placeholder = 'Enter address...' }: Props) {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<Location[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +29,7 @@ export default function NavigationControl({ onSelectLocation }: Props) {
             marginBottom: '16px',
             border: '2px solid #555'
         }}>
-            <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', fontSize: '1.1rem' }}>📍 Where to?</p>
+            <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', fontSize: '1.1rem' }}>{label}</p>
 
             <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
                 <input
@@ -35,7 +37,7 @@ export default function NavigationControl({ onSelectLocation }: Props) {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                    placeholder="Enter address..."
+                    placeholder={placeholder}
                     style={{
                         flex: 1,
                         padding: '12px',

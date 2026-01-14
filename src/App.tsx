@@ -50,6 +50,7 @@ export default function App() {
 
     // Navigation State
     const [currentPos, setCurrentPos] = useState<[number, number] | null>(null);
+    const [startLocation, setStartLocation] = useState<Location | null>(null);
     const [destination, setDestination] = useState<Location | null>(null);
     const [route, setRoute] = useState<RouteData | null>(null);
 
@@ -129,11 +130,12 @@ export default function App() {
 
     // Handle Route Calculation when destination changes
     useEffect(() => {
-        if (currentPos && destination) {
-            calculateRoute(currentPos, [destination.lat, destination.lon]);
+        const start = startLocation ? [startLocation.lat, startLocation.lon] as [number, number] : currentPos;
+        if (start && destination) {
+            calculateRoute(start, [destination.lat, destination.lon]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [destination, units]);
+    }, [destination, startLocation, units]);
 
     const formatDistance = (meters: number) => {
         if (units === 'imperial') {
@@ -230,9 +232,22 @@ export default function App() {
             {/* Main Content Area */}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-                {/* Search Bar */}
+                {/* Starting Location */}
                 {!isFocusMode && (
-                    <NavigationControl onSelectLocation={setDestination} />
+                    <NavigationControl
+                        onSelectLocation={setStartLocation}
+                        placeholder="Starting from..."
+                        label="📍 Starting Point (or use GPS)"
+                    />
+                )}
+
+                {/* Destination */}
+                {!isFocusMode && (
+                    <NavigationControl
+                        onSelectLocation={setDestination}
+                        placeholder="Going to..."
+                        label="🎯 Destination"
+                    />
                 )}
 
                 {/* Status / Controls */}
