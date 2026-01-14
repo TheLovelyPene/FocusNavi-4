@@ -46,7 +46,6 @@ export default function App() {
 
     const [status, setStatus] = useState('Tap mic or search to navigate.');
     const [isListening, setIsListening] = useState(false);
-    const [activeLayer, setActiveLayer] = useState<'osm' | 'usgs' | 'positron'>('osm');
     const [units, setUnits] = useState<'metric' | 'imperial'>('imperial');
 
     // Navigation State
@@ -171,12 +170,6 @@ export default function App() {
         }
     };
 
-    const switchLayer = (key: 'osm' | 'usgs' | 'positron') => {
-        if (!mapInstance.current) return;
-        Object.values(LAYERS).forEach(layer => mapInstance.current?.removeLayer(layer));
-        LAYERS[key].addTo(mapInstance.current);
-        setActiveLayer(key);
-    };
 
     const speak = (text: string) => {
         if ('speechSynthesis' in window) {

@@ -1,35 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body { font-family: -apple-system, sans-serif; background: #fff; padding: 20px; }
-    .current { font-size: 24px; font-weight: bold; margin: 40px 0; text-align: center; }
-    .next { font-size: 16px; opacity: 0.5; text-align: center; margin-bottom: 30px; }
-    button { 
-      width: 100%; padding: 16px; font-size: 18px; background: #007aff; 
-      color: white; border: none; border-radius: 12px; 
-    }
-  </style>
-</head>
-<body>
-  <div class="current">Walk 4 blocks east to York Avenue</div>
-  <div class="next">Turn right at York Ave</div>
-  <button onclick="showNext()">Next</button>
-
-  <script>
-    let step = 1;
-    function showNext() {
-      if (step === 1) {
-        document.querySelector('.current').textContent = "Turn right at York Ave";
-        document.querySelector('.next').textContent = "Walk 2 blocks to East 70th";
-        step = 2;
-      } else if (step === 2) {
-        document.querySelector('.current').textContent = "You've arrived.";
-        document.querySelector('.next').textContent = "";
-        document.querySelector('button').style.display = "none";
-      }
-    }
-  </script>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FocusNavi 4</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

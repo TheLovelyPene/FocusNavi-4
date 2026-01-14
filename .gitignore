@@ -121,3 +121,13 @@ dist
 
 # Brain
 .gemini/
+
+# Documentation & Internal
+.agent/
+.github/
+Plans/
+Tasks/
+Logs/
+Walkthroughs/
+dist/
+deploy.sh

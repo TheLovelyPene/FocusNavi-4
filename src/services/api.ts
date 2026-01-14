@@ -7,6 +7,9 @@ export interface Location {
 export interface RouteStep {
     instruction: string;
     distance: number; // meters
+    maneuver: {
+        location: [number, number];
+    };
 }
 
 export interface RouteData {
@@ -59,7 +62,8 @@ export const api = {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const steps = route.legs[0].steps.map((step: any) => ({
                 instruction: step.maneuver.type + ' ' + (step.maneuver.modifier || ''),
-                distance: step.distance
+                distance: step.distance,
+                maneuver: step.maneuver
             }));
 
             return {
