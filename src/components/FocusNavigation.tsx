@@ -1,4 +1,5 @@
 import type { RouteStep } from '../services/api';
+import DirectionArrow from './DirectionArrow';
 
 interface Props {
     steps: RouteStep[];
@@ -69,6 +70,9 @@ export default function FocusNavigation({ steps, currentStepIndex, distanceToNex
 
             {/* Main Instruction */}
             <div style={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
+                    <DirectionArrow modifier={currentStep.maneuver.modifier} size={160} />
+                </div>
                 <div style={{ fontSize: '5rem', fontWeight: 'bold', marginBottom: '20px', color: '#0af' }}>
                     {distDisplay}
                 </div>

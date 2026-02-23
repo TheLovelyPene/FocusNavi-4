@@ -9,6 +9,7 @@ export interface RouteStep {
     distance: number; // meters
     maneuver: {
         location: [number, number];
+        modifier?: string;
     };
 }
 
@@ -63,7 +64,10 @@ export const api = {
             const steps = route.legs[0].steps.map((step: any) => ({
                 instruction: step.maneuver.type + ' ' + (step.maneuver.modifier || ''),
                 distance: step.distance,
-                maneuver: step.maneuver
+                maneuver: {
+                    location: step.maneuver.location,
+                    modifier: step.maneuver.modifier
+                }
             }));
 
             return {
